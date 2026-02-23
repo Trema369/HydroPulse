@@ -1,0 +1,42 @@
+import QtQuick
+import Qt.labs.lottieqt 1.0
+import QtQuick.Controls
+import QtQuick.Layouts
+import Qt5Compat.GraphicalEffects   // <--- legacy shadow support
+import QtCharts
+
+Item {
+    property StackView stackView
+    Rectangle {
+        anchors.fill: parent
+
+        gradient: Gradient {
+            GradientStop {
+                id: stop1
+                position: 0.0
+                color: "#ff7a18"
+            }
+            GradientStop {
+                id: stop2
+                position: 1.0
+                color: "#7c3aed"
+            }
+        }
+        LottieAnimation {
+            id: lottieId
+            anchors.centerIn: parent
+            source: "assets/loading.json"
+            loops: Animation.Infinite
+            quality: LottieAnimation.HighQuality
+            autoPlay: true
+        }
+    }
+    Timer {
+        interval: 2000   // 5 seconds
+        running: true
+        repeat: false
+        onTriggered: {
+            myStackView.push("first.qml");
+        }
+    }
+}
