@@ -22,13 +22,14 @@ Item {
                 color: "#7c3aed"
             }
         }
-        LottieAnimation {
+        AnimatedImage {
             id: lottieId
+            width: 400
+            height: 400
             anchors.centerIn: parent
-            source: "assets/loading.json"
-            loops: Animation.Infinite
-            quality: LottieAnimation.HighQuality
-            autoPlay: true
+            fillMode: Image.PreserveAspectFit
+            source: "assets/loading.gif"
+            smooth: true
         }
     }
     Timer {
