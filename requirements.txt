@@ -1,0 +1,21 @@
+# ----------------------------
+# Qt / Desktop App
+# ----------------------------
+PySide6>=6.6
+
+# ----------------------------
+# FastAPI Backend
+# ----------------------------
+fastapi>=0.110
+uvicorn[standard]>=0.27
+
+# ----------------------------
+# Raspberry Pi Hardware
+# ----------------------------
+adafruit-blinka
+adafruit-circuitpython-ads1x15
+
+# ----------------------------
+# Optional (recommended)
+# ----------------------------
+numpy
