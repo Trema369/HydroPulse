@@ -1,18 +1,19 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import Qt5Compat.GraphicalEffects   // legacy shadow support
+import Qt5Compat.GraphicalEffects
 import "../components"
 import QtCharts
 
 Item {
     id: root
-    width: 800
-    height: 600
+    width: parent ? parent.width : 800
+    height: parent ? parent.height : 600
     property StackView stackView
 
     Rectangle {
-        anchors.fill: parent
+        width: root.width
+        height: root.height
         gradient: Gradient {
             GradientStop {
                 position: 0.0
@@ -25,12 +26,12 @@ Item {
         }
 
         ColumnLayout {
-            anchors.centerIn: parent
             spacing: 30
-            width: parent.width * 0.9
-            height: parent.height * 0.8  // definite height
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-            // Header text
+            // Header
             Text {
                 text: "Select a card to continue"
                 color: "white"
@@ -43,38 +44,16 @@ Item {
             // Cards row
             RowLayout {
                 spacing: 40
-                Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
-                Layout.preferredHeight: parent.height * 0.5  // definite height
+                Layout.fillHeight: true
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
                 // Card 1
                 Card {
-                    id: card1
                     color: Qt.rgba(1, 1, 1, 0.2)
                     radius: 16
-                    Layout.preferredWidth: 250
-                    Layout.preferredHeight: 300
-
-                    ColumnLayout {
-                        anchors.fill: parent  // optional, can remove
-                        spacing: 10
-                        Layout.alignment: Qt.AlignHCenter
-
-                        Image {
-                            source: "assets/PlantAnalysis.png"
-                            fillMode: Image.PreserveAspectFit
-                            Layout.preferredWidth: parent.width * 0.8
-                            Layout.preferredHeight: 180
-                        }
-
-                        Text {
-                            text: "AI Plant Analysis"
-                            color: "white"
-                            font.pixelSize: 16
-                            horizontalAlignment: Text.AlignHCenter
-                            Layout.alignment: Qt.AlignHCenter
-                        }
-                    }
+                    Layout.preferredWidth: root.width * 0.3
+                    Layout.preferredHeight: root.height * 0.5
 
                     MouseArea {
                         anchors.fill: parent
@@ -85,35 +64,36 @@ Item {
                                 stackView.push("plantAnalysis.qml");
                         }
                     }
-                }
-
-                // Card 2
-                Card {
-                    id: card2
-                    color: Qt.rgba(1, 1, 1, 0.2)
-                    radius: 16
-                    Layout.preferredWidth: 250
-                    Layout.preferredHeight: 300
 
                     ColumnLayout {
                         spacing: 10
                         Layout.alignment: Qt.AlignHCenter
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
 
                         Image {
-                            source: "assets/WaterAnalysis.png"
+                            source: "assets/PlantAnalysis.png"
                             fillMode: Image.PreserveAspectFit
                             Layout.preferredWidth: parent.width * 0.8
-                            Layout.preferredHeight: 180
+                            Layout.preferredHeight: parent.height * 0.7
                         }
 
                         Text {
-                            text: "Water Analysis"
+                            text: "AI Plant Analysis"
                             color: "white"
                             font.pixelSize: 16
                             horizontalAlignment: Text.AlignHCenter
                             Layout.alignment: Qt.AlignHCenter
                         }
                     }
+                }
+
+                // Card 2
+                Card {
+                    color: Qt.rgba(1, 1, 1, 0.2)
+                    radius: 16
+                    Layout.preferredWidth: root.width * 0.3
+                    Layout.preferredHeight: root.height * 0.5
 
                     MouseArea {
                         anchors.fill: parent
@@ -122,6 +102,28 @@ Item {
                         onClicked: {
                             if (stackView)
                                 stackView.push("reading.qml");
+                        }
+                    }
+
+                    ColumnLayout {
+                        spacing: 10
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+
+                        Image {
+                            source: "assets/WaterAnalysis.png"
+                            fillMode: Image.PreserveAspectFit
+                            Layout.preferredWidth: parent.width * 0.8
+                            Layout.preferredHeight: parent.height * 0.7
+                        }
+
+                        Text {
+                            text: "Water Analysis"
+                            color: "white"
+                            font.pixelSize: 16
+                            horizontalAlignment: Text.AlignHCenter
+                            Layout.alignment: Qt.AlignHCenter
                         }
                     }
                 }
