@@ -6,7 +6,6 @@ import "../components"
 
 Item {
     id: root
-    anchors.fill: parent
 
     Rectangle {
         anchors.fill: parent

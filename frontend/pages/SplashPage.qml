@@ -4,7 +4,6 @@ import QtQuick.Controls
 Item {
     property StackView stackView
     property Loader pageLoader
-    anchors.fill: parent
 
     Rectangle {
         anchors.fill: parent
