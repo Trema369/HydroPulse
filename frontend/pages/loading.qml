@@ -36,7 +36,7 @@ Item {
         running: true
         repeat: false
         onTriggered: {
-            myStackView.push("first.qml");
+            myStackView.push("reading.qml");
         }
     }
 }
