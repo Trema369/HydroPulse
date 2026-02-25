@@ -1,19 +1,57 @@
-import sys
-from PySide6.QtWidgets import QApplication
-from PySide6.QtQml import QQmlApplicationEngine
-from controller import SensorController
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
+import asyncio
+from .sensor_service import sensor_loop
+from .ai_service import analyze_readings
+from .database import init_db, save_result
+from .models import ReadingPayload
 
-app = QApplication(sys.argv)
+app = FastAPI()
+init_db()
 
-engine = QQmlApplicationEngine()
+# Allow QML + Website access
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-controller = SensorController()
-engine.rootContext().setContextProperty("controller", controller)
+connected_clients = set()
 
-engine.load("../frontend/main.qml")
 
-if not engine.rootObjects():
-    sys.exit(-1)
+@app.on_event("startup")
+async def start_sensor_task():
+    asyncio.create_task(sensor_loop(broadcast))
 
-sys.exit(app.exec())
 
+async def broadcast(data: dict):
+    dead = []
+    for ws in connected_clients:
+        try:
+            await ws.send_json(data)
+        except:
+            dead.append(ws)
+
+    for ws in dead:
+        connected_clients.remove(ws)
+
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    connected_clients.add(websocket)
+
+    try:
+        while True:
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        connected_clients.remove(websocket)
+
+
+@app.post("/analyze")
+async def analyze(payload: ReadingPayload):
+    result = analyze_readings(payload)
+    save_result(result)
+    return result
