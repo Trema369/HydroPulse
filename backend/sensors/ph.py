@@ -6,7 +6,7 @@ from time import sleep
 
 i2c = busio.I2C(board.SCL, board.SDA)
 ads = ADS1115(i2c)
-chan = AnalogIn(ads, ADS1115.P0)
+chan = AnalogIn(ads, 0)
 
 # ⚠️ Replace with real calibration values
 SLOPE = -5.7

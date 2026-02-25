@@ -1,8 +1,8 @@
 from PySide6.QtCore import QObject, Signal, QTimer
 
-from sensors.tubi import read_turbidity
-from sensors.temp import read_temp_c
-from sensors.ph import read_ph
+from backend.sensors.tubi import read_turbidity
+from backend.sensors.temp import read_temp_c
+from backend.sensors.ph import read_ph
 
 
 class SensorController(QObject):

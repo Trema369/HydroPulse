@@ -1,5 +1,4 @@
 import QtQuick
-import Qt.labs.lottieqt 1.0
 import QtQuick.Controls
 import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects   // <--- legacy shadow support

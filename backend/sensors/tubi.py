@@ -6,7 +6,7 @@ import time
 
 i2c = busio.I2C(board.SCL, board.SDA)
 ads = ADS.ADS1115(i2c)
-chan = AnalogIn(ads, ADS.P0)
+chan = AnalogIn(ads, 1)
 
 def calculate_ntu(voltage):
     ntu = (3.9 - voltage) * (1000 / 3.9)
