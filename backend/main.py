@@ -10,7 +10,7 @@ engine = QQmlApplicationEngine()
 controller = SensorController()
 engine.rootContext().setContextProperty("controller", controller)
 
-engine.load("frontend/main.qml")
+engine.load("../frontend/main.qml")
 
 if not engine.rootObjects():
     sys.exit(-1)
