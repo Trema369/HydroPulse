@@ -7,6 +7,8 @@ import QtCharts
 
 Item {
     id: root
+    width: 800
+    height: 600
     property StackView stackView
 
     Rectangle {
@@ -26,8 +28,9 @@ Item {
             anchors.centerIn: parent
             spacing: 30
             width: parent.width * 0.9
+            height: parent.height * 0.8  // definite height
 
-            // --- Header text ---
+            // Header text
             Text {
                 text: "Select a card to continue"
                 color: "white"
@@ -37,23 +40,23 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
             }
 
-            // --- Cards row ---
+            // Cards row
             RowLayout {
                 spacing: 40
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
+                Layout.preferredHeight: parent.height * 0.5  // definite height
 
-                // --- Card 1 ---
+                // Card 1
                 Card {
                     id: card1
                     color: Qt.rgba(1, 1, 1, 0.2)
                     radius: 16
-                    Layout.preferredWidth: parent.width * 0.3
-                    Layout.preferredHeight: parent.height * 0.5
+                    Layout.preferredWidth: 250
+                    Layout.preferredHeight: 300
 
                     ColumnLayout {
-                        anchors.fill: parent
-                        anchors.margins: 10
+                        anchors.fill: parent  // optional, can remove
                         spacing: 10
                         Layout.alignment: Qt.AlignHCenter
 
@@ -61,7 +64,7 @@ Item {
                             source: "assets/PlantAnalysis.png"
                             fillMode: Image.PreserveAspectFit
                             Layout.preferredWidth: parent.width * 0.8
-                            Layout.preferredHeight: parent.height * 0.7
+                            Layout.preferredHeight: 180
                         }
 
                         Text {
@@ -78,23 +81,21 @@ Item {
                         hoverEnabled: true
                         cursorShape: Qt.PointingHandCursor
                         onClicked: {
-                            // push page if needed
-                            // stackView.push("plantAnalysis.qml")
+                            if (stackView)
+                                stackView.push("plantAnalysis.qml");
                         }
                     }
                 }
 
-                // --- Card 2 ---
+                // Card 2
                 Card {
                     id: card2
                     color: Qt.rgba(1, 1, 1, 0.2)
                     radius: 16
-                    Layout.preferredWidth: parent.width * 0.3
-                    Layout.preferredHeight: parent.height * 0.5
+                    Layout.preferredWidth: 250
+                    Layout.preferredHeight: 300
 
                     ColumnLayout {
-                        anchors.fill: parent
-                        anchors.margins: 10
                         spacing: 10
                         Layout.alignment: Qt.AlignHCenter
 
@@ -102,7 +103,7 @@ Item {
                             source: "assets/WaterAnalysis.png"
                             fillMode: Image.PreserveAspectFit
                             Layout.preferredWidth: parent.width * 0.8
-                            Layout.preferredHeight: parent.height * 0.7
+                            Layout.preferredHeight: 180
                         }
 
                         Text {
