@@ -5,6 +5,8 @@ from .sensor_service import sensor_loop
 from .ai_service import analyze_readings
 from .database import init_db, save_result
 from .models import ReadingPayload
+from .sensor_state import update_reading
+
 
 app = FastAPI()
 init_db()
@@ -27,6 +29,7 @@ async def start_sensor_task():
 
 
 async def broadcast(data: dict):
+    update_reading(data["ph"], data["turbidity"], data["temperature"])
     dead = []
     for ws in connected_clients:
         try:

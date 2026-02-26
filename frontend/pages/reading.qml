@@ -6,6 +6,7 @@ import "../components"
 
 Item {
     id: root
+    property StackView stackView
 
     Rectangle {
         anchors.fill: parent
@@ -274,6 +275,11 @@ Item {
                                 Layout.preferredWidth: 200
                                 text: "Calculate"
                                 font.pixelSize: 15
+
+                                onClicked: {
+                                    aiController.calculate_ai();
+                                    stackView.push("reading.qml");
+                                }
 
                                 background: Rectangle {
                                     radius: 8
