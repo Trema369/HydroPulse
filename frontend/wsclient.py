@@ -29,6 +29,7 @@ class WebSocketWorker(QObject):
                         elif msg.get("type") == "analysis":
                             self.analysisReady.emit(msg)
                         elif msg.get("type") == "analyze_request":
+                            print("analyze_request received")
                             self.analyzeRequested.emit()
             except Exception as e:
                 print(f"WebSocket error: {e}, reconnecting in 3s...")

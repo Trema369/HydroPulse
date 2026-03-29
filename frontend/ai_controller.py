@@ -14,10 +14,13 @@ class AIController(QObject):
 
     @Slot()
     def calculate_ai(self):
+        print("calculate_ai called")
         reading = get_latest_reading()
+        print("Reading:", reading)
         if reading.get("ph") is None or reading.get("turbidity") is None:
             print("Sensor readings not yet stable.")
             return
+        print("Running analysis...")
         asyncio.run(self._run_analysis(reading))
 
     async def _run_analysis(self, reading: dict):
