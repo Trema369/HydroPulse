@@ -15,6 +15,7 @@ async def sensor_loop(broadcast_callback):
                 temp = read_temp_c()
                 turbidity = read_turbidity()
                 data = {
+                    "type":"reading",
                     "ph": ph,
                     "temperature": temp,
                     "turbidity": turbidity,
