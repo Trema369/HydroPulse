@@ -29,7 +29,8 @@ def on_ai_result(data):
     if overview_text:
         overview_text.setProperty("text", data.get("overview", "No overview"))
 
-ai_controller.resultReady.connect(on_ai_result)
+        ai_controller.resultReady.connect(on_ai_result)
+controller.analyzeRequested.connect(ai_controller.calculate_ai)
 base_dir = os.path.dirname(os.path.abspath(__file__))
 qml_file = os.path.join(base_dir, "main.qml")
 

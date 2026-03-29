@@ -1,23 +1,23 @@
 from PySide6.QtCore import QObject, Signal, QThread
 from frontend.wsclient import WebSocketWorker
 
-
 class SensorController(QObject):
     phChanged = Signal(float)
     turbidityChanged = Signal(float)
     tempChanged = Signal(float)
+    analysisReady = Signal(dict)
+    analyzeRequested = Signal()
 
     def __init__(self):
         super().__init__()
-
         self.worker = WebSocketWorker()
         self.thread = QThread()
         self.worker.moveToThread(self.thread)
-
         self.worker.phChanged.connect(self.phChanged.emit)
         self.worker.turbidityChanged.connect(self.turbidityChanged.emit)
         self.worker.tempChanged.connect(self.tempChanged.emit)
-
+        self.worker.analysisReady.connect(self.analysisReady.emit)
+        self.worker.analyzeRequested.connect(self.analyzeRequested.emit)
         self.thread.started.connect(self.worker.start)
         self.thread.start()
 

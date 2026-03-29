@@ -7,6 +7,8 @@ class WebSocketWorker(QObject):
     phChanged = Signal(float)
     tempChanged = Signal(float)
     turbidityChanged = Signal(float)
+    analysisReady = Signal(dict)
+    analyzeRequested = Signal()
 
     def __init__(self):
         super().__init__()
@@ -19,10 +21,15 @@ class WebSocketWorker(QObject):
                 async with websockets.connect(uri) as websocket:
                     while self._running:
                         data = await websocket.recv()
-                        reading = json.loads(data)
-                        self.phChanged.emit(float(reading.get("ph", 0)))
-                        self.tempChanged.emit(float(reading.get("temperature") or 0))
-                        self.turbidityChanged.emit(float(reading.get("turbidity", 0)))
+                        msg = json.loads(data)
+                        if msg.get("type") == "reading":
+                            self.phChanged.emit(float(msg.get("ph", 0)))
+                            self.tempChanged.emit(float(msg.get("temperature") or 0))
+                            self.turbidityChanged.emit(float(msg.get("turbidity", 0)))
+                        elif msg.get("type") == "analysis":
+                            self.analysisReady.emit(msg)
+                        elif msg.get("type") == "analyze_request":
+                            self.analyzeRequested.emit()
             except Exception as e:
                 print(f"WebSocket error: {e}, reconnecting in 3s...")
                 await asyncio.sleep(3)

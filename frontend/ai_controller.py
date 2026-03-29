@@ -1,14 +1,16 @@
-# main_controller.py
-import requests
+import httpx
 from PySide6.QtCore import QObject, Slot, Signal
-from backend.sensor_state import get_latest_reading  # should return {'ph': .., 'turbidity': .., 'temperature': ..}
+from backend.sensor_state import get_latest_reading
+from backend.api import analyze_sensor_data
+import asyncio
+
+VPS_RESULT_URL = "https://hydro-api.tremaz.dev/result"
 
 class AIController(QObject):
-    resultReady = Signal(dict)  # emits AI analysis back to QML
+    resultReady = Signal(dict)
 
     def __init__(self):
         super().__init__()
-        self.ai_url = "http://127.0.0.1:8000/analyze"
 
     @Slot()
     def calculate_ai(self):
@@ -16,12 +18,18 @@ class AIController(QObject):
         if None in reading.values():
             print("Sensor readings not yet stable.")
             return
+        asyncio.run(self._run_analysis(reading))
 
+    async def _run_analysis(self, reading: dict):
         try:
-            resp = requests.post(self.ai_url, json=reading, timeout=15)
-            resp.raise_for_status()
-            data = resp.json()
-            print("AI Result:", data)
-            self.resultReady.emit(data)  # emit to QML
+            result = await analyze_sensor_data(
+                ph=reading["ph"],
+                turbidity=reading["turbidity"],
+                temperature=reading["temperature"]
+            )
+            self.resultReady.emit(result)
+            async with httpx.AsyncClient() as client:
+                await client.post(VPS_RESULT_URL, json=result, timeout=10)
+            print("AI result pushed to VPS:", result)
         except Exception as e:
-            print("AI call failed:", e)
+            print("AI analysis failed:", e)
