@@ -1,7 +1,7 @@
 # main_controller.py
 import requests
 from PySide6.QtCore import QObject, Slot, Signal
-from ..backend.sensor_state import get_latest_reading  # should return {'ph': .., 'turbidity': .., 'temperature': ..}
+from backend.sensor_state import get_latest_reading  # should return {'ph': .., 'turbidity': .., 'temperature': ..}
 
 class AIController(QObject):
     resultReady = Signal(dict)  # emits AI analysis back to QML

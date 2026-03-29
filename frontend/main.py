@@ -1,9 +1,15 @@
 # main.py
+import os
 import sys
 from PySide6.QtWidgets import QApplication
 from PySide6.QtQml import QQmlApplicationEngine
-from sensor_controller import SensorController
-from ai_controller import AIController
+from PySide6.QtCore import QObject # Added this for your findChild call later
+
+# Use the full package path
+from frontend.sensor_controller import SensorController
+from frontend.ai_controller import AIController
+
+# ... rest of your code ...
 
 app = QApplication(sys.argv)
 engine = QQmlApplicationEngine()
@@ -24,8 +30,11 @@ def on_ai_result(data):
         overview_text.setProperty("text", data.get("overview", "No overview"))
 
 ai_controller.resultReady.connect(on_ai_result)
+base_dir = os.path.dirname(os.path.abspath(__file__))
+qml_file = os.path.join(base_dir, "main.qml")
 
-engine.load("main.qml")
+# Load the file using the absolute path
+engine.load(qml_file)
 
 if not engine.rootObjects():
     sys.exit(-1)

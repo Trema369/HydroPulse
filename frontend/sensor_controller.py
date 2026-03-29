@@ -1,5 +1,5 @@
 from PySide6.QtCore import QObject, Signal, QThread
-from wsclient import WebSocketWorker
+from frontend.wsclient import WebSocketWorker
 
 
 class SensorController(QObject):

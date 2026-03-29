@@ -1,21 +1,25 @@
 # ----------------------------
-# Qt / Desktop App
+# Qt / Desktop App & UI
 # ----------------------------
-PySide6>=6.6
+PySide6>=6.6.0
 
 # ----------------------------
-# FastAPI Backend
+# FastAPI & Networking
 # ----------------------------
-fastapi>=0.110
-uvicorn[standard]>=0.27
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0
+websockets>=12.0
 
 # ----------------------------
 # Raspberry Pi Hardware
 # ----------------------------
-adafruit-blinka
-adafruit-circuitpython-ads1x15
+# Provides the 'board' and 'busio' modules
+Adafruit-Blinka>=8.30.0
+# For the Analog-to-Digital converter (pH/Sensors)
+adafruit-circuitpython-ads1x15>=2.2.14
 
 # ----------------------------
-# Optional (recommended)
+# Data Processing & Utilities
 # ----------------------------
-numpy
+numpy>=1.26.0
+python-dotenv>=1.0.0
