@@ -15,7 +15,7 @@ class AIController(QObject):
     @Slot()
     def calculate_ai(self):
         reading = get_latest_reading()
-        if None in reading.values():
+        if reading.get("ph") is None or reading.get("turbidity") is None:
             print("Sensor readings not yet stable.")
             return
         asyncio.run(self._run_analysis(reading))
@@ -25,7 +25,7 @@ class AIController(QObject):
             result = await analyze_sensor_data(
                 ph=reading["ph"],
                 turbidity=reading["turbidity"],
-                temperature=reading["temperature"]
+                temperature=reading.get("temperature") or 0
             )
             self.resultReady.emit(result)
             async with httpx.AsyncClient() as client:
