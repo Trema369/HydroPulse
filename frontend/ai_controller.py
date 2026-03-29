@@ -1,10 +1,10 @@
 import httpx
-from PySide6.QtCore import QObject, Slot, Signal
-from backend.sensor_state import get_latest_reading
-from backend.api import analyze_sensor_data
 import asyncio
+from PySide6.QtCore import QObject, Slot, Signal
+from backend.api import analyze_sensor_data
 
 VPS_RESULT_URL = "https://hydro-api.tremaz.dev/result"
+VPS_READING_URL = "https://hydro-api.tremaz.dev/reading"
 
 class AIController(QObject):
     resultReady = Signal(dict)
@@ -15,22 +15,26 @@ class AIController(QObject):
     @Slot()
     def calculate_ai(self):
         print("calculate_ai called")
-        reading = get_latest_reading()
-        print("Reading:", reading)
-        if reading.get("ph") is None or reading.get("turbidity") is None:
-            print("Sensor readings not yet stable.")
-            return
-        print("Running analysis...")
-        asyncio.run(self._run_analysis(reading))
+        asyncio.run(self._run_analysis())
 
-    async def _run_analysis(self, reading: dict):
+    async def _run_analysis(self):
         try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.get(VPS_READING_URL, timeout=5)
+                reading = resp.json()
+                print("Reading from VPS:", reading)
+
+            ph = reading.get("ph") or 0
+            turbidity = reading.get("turbidity") or 0
+            temperature = reading.get("temperature") or 0
+
             result = await analyze_sensor_data(
-                ph=reading["ph"],
-                turbidity=reading["turbidity"],
-                temperature=reading.get("temperature") or 0
+                ph=ph,
+                turbidity=turbidity,
+                temperature=temperature
             )
             self.resultReady.emit(result)
+
             async with httpx.AsyncClient() as client:
                 await client.post(VPS_RESULT_URL, json=result, timeout=10)
             print("AI result pushed to VPS:", result)
