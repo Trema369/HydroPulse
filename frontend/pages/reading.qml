@@ -564,6 +564,7 @@ Item {
                                 onClicked: {
                                     aiController.calculate_ai();
                                     stackView.push("results.qml", {
+                                        stackView: stackView,
                                         snapPh: phGauge.value,
                                         snapTemp: tempGauge.value,
                                         snapTurbidity: turbidityGauge.value,

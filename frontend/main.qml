@@ -11,6 +11,11 @@ ApplicationWindow {
     StackView {
         id: myStackView
         anchors.fill: parent
-        initialItem: "pages/SplashPage.qml"
+
+        Component.onCompleted: {
+            myStackView.push("pages/SplashPage.qml", {
+                stackView: myStackView
+            });
+        }
     }
 }

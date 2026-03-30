@@ -220,6 +220,8 @@ Item {
         interval: 4000
         running: true
         repeat: false
-        onTriggered: stackView.push("reading.qml")
+        onTriggered: stackView.push("reading.qml", {
+            stackView: stackView
+        })
     }
 }
