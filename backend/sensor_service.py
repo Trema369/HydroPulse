@@ -30,4 +30,4 @@ async def sensor_loop(broadcast_callback):
                     print("VPS push error:", e)
             except Exception as e:
                 print("Sensor read error:", e)
-            await asyncio.sleep(5)
+            await asyncio.sleep(1)

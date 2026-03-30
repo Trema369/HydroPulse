@@ -5,6 +5,7 @@ class SensorController(QObject):
     phChanged = Signal(float)
     turbidityChanged = Signal(float)
     tempChanged = Signal(float)
+    tdsChanged = Signal(float)
     analysisReady = Signal(dict)
     analyzeRequested = Signal()
 
@@ -16,6 +17,7 @@ class SensorController(QObject):
         self.worker.phChanged.connect(self.phChanged.emit)
         self.worker.turbidityChanged.connect(self.turbidityChanged.emit)
         self.worker.tempChanged.connect(self.tempChanged.emit)
+        self.worker.tdsChanged.connect(self.tdsChanged.emit)
         self.worker.analysisReady.connect(self.analysisReady.emit)
         self.worker.analyzeRequested.connect(self.analyzeRequested.emit)
         self.thread.started.connect(self.worker.start)

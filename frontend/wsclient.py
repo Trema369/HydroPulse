@@ -9,6 +9,7 @@ class WebSocketWorker(QObject):
     phChanged = Signal(float)
     tempChanged = Signal(float)
     turbidityChanged = Signal(float)
+    tdsChanged = Signal(float)
     analysisReady = Signal(dict)
     analyzeRequested = Signal()
 
@@ -28,6 +29,7 @@ class WebSocketWorker(QObject):
                             self.phChanged.emit(float(msg.get("ph", 0)))
                             self.tempChanged.emit(float(msg.get("temperature") or 0))
                             self.turbidityChanged.emit(float(msg.get("turbidity", 0)))
+                            self.tdsChanged.emit(float(msg.get("tds", 0)))
                         elif msg.get("type") == "analysis":
                             self.analysisReady.emit(msg)
             except Exception as e:

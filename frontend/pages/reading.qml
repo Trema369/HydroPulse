@@ -376,7 +376,7 @@ Item {
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         Text {
-                            text: "· Updated every 5 s"
+                            text: "· Updated every 1 s"
                             color: "#374151"
                             font.pixelSize: 12
                             anchors.verticalCenter: parent.verticalCenter
